@@ -1,33 +1,30 @@
 ﻿using System;
-using System.Net;
 using Microsoft.Extensions.Logging;
+using Orleans;
 using Orleans.Configuration;
-using Orleans.Hosting;
 
-namespace DemoSilo
+namespace DemoClient
 {
-    public class LocalhostSiloBuilder : SiloHostBuilder
+    public class LocalhostClientBuilder : ClientBuilder
     {
         public string ClusterId { get; set; }
         public string ServiceId { get; set; }
         public Action<ILoggingBuilder> ConfigLoggingBuilder { get; set; }
 
-        public LocalhostSiloBuilder(string clusterId, string serviceId)
+        public LocalhostClientBuilder(string clusterId, string serviceId)
         {
             ClusterId = clusterId;
             ServiceId = serviceId;
         }
 
-        public new ISiloHost Build()
+        public new IClusterClient Build()
         {
             this.UseLocalhostClustering()
                 .Configure<ClusterOptions>(options =>
                 {
                     options.ClusterId = ClusterId;
                     options.ServiceId = ServiceId;
-                })
-                .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback);
-
+                });
             if (ConfigLoggingBuilder != null)
             {
                 this.ConfigureLogging(ConfigLoggingBuilder);

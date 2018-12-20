@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using DemoClient;
 using DemoSilo;
 using Microsoft.Extensions.Logging;
 using Orleans;
@@ -31,17 +32,14 @@ namespace OrleansDemo
                     Console.WriteLine("Service started, press any key to create client to connect it.");
                     Console.ReadKey();
 
-                    var clientBuilder = new ClientBuilder().UseLocalhostClustering()
-                        .Configure<ClusterOptions>(options =>
+                    var clientBuilder = new LocalhostClientBuilder("dev", "OrleansDemo")
                         {
-                            options.ClusterId = "dev";
-                            options.ServiceId = "Orleans2GettingStarted";
-                        })
-                        .ConfigureLogging(logging =>
-                        {
-                            logging.AddConsole();
-                            logging.AddDebug();
-                        });
+                            ConfigLoggingBuilder = logging =>
+                            {
+                                logging.AddConsole();
+                                logging.AddDebug();
+                            }
+                        };
 
                     using (var client = clientBuilder.Build())
                     {
