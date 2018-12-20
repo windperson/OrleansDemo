@@ -33,13 +33,13 @@ namespace OrleansDemo
                     Console.ReadKey();
 
                     var clientBuilder = new LocalhostClientBuilder("dev", "OrleansDemo")
+                    {
+                        ConfigLoggingBuilder = logging =>
                         {
-                            ConfigLoggingBuilder = logging =>
-                            {
-                                logging.AddConsole();
-                                logging.AddDebug();
-                            }
-                        };
+                            logging.AddConsole();
+                            logging.AddDebug();
+                        }
+                    };
 
                     using (var client = clientBuilder.Build())
                     {
@@ -48,8 +48,10 @@ namespace OrleansDemo
                         Console.ReadKey();
 
                         var sensor = client.GetGrain<ITemperatureSensorGrain>(123);
+
                         await sensor.SubmitTemperatureAsync(32.5f);
                         Console.WriteLine("Client sent message successfully, press any key to close client.");
+                        Console.ReadKey();
                         await client.Close();
                     }
 
