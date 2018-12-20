@@ -15,12 +15,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Orleans.Server" Version="2.2.0" />
     <PackageReference Include="OrleansDashboard" Version="2.1.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DemoGrain\DemoGrain.csproj" />
+    <ProjectReference Include="..\DemoSilo\DemoSilo.csproj" />
   </ItemGroup>
 
 </Project>

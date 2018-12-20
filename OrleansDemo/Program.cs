@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using DemoSilo;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
@@ -15,18 +16,14 @@ namespace OrleansDemo
         {
             try
             {
-                var siloBuilder = new SiloHostBuilder().UseLocalhostClustering()
-                    .Configure<ClusterOptions>(options =>
+                var siloBuilder = new LocalhostSiloBuilder("dev", "OrleansDemo")
+                {
+                    ConfigLoggingBuilder = builder =>
                     {
-                        options.ClusterId = "dev";
-                        options.ServiceId = "Orleans2GettingStarted";
-                    })
-                    .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
-                    .ConfigureLogging(logging =>
-                    {
-                        logging.AddConsole();
-                        logging.AddDebug();
-                    });
+                        builder.AddConsole();
+                        builder.AddDebug();
+                    }
+                };
 
                 using (var host = siloBuilder.Build())
                 {
