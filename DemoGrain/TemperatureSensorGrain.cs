@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Orleans;
 using RpcShared;
 
-namespace OrleansDemo
+namespace DemoGrain
 {
     public class TemperatureSensorGrain : Grain, ITemperatureSensorGrain
     {
